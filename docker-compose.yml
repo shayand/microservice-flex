@@ -1,0 +1,56 @@
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+version: "3.1"
+
+volumes:
+  mysql_data:
+    driver: local
+    
+services:
+
+    mariadb:
+      image: mariadb:10.4
+      container_name: azki-microservice-mariadb
+      working_dir: /application
+      volumes:
+        - .:/application
+      environment:
+        - MYSQL_ROOT_PASSWORD=very_secret
+        - MYSQL_DATABASE=azki_db
+        - MYSQL_USER=azki_user
+        - MYSQL_PASSWORD=secret
+      ports:
+        - "6972:3306"
+
+    webserver:
+      image: nginx:alpine
+      container_name: azki-microservice-webserver
+      working_dir: /application
+      volumes:
+          - .:/application
+          - ./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      ports:
+       - "6999:80"
+
+    php-fpm:
+      build: phpdocker/php-fpm
+      container_name: azki-microservice-php-fpm
+      working_dir: /application
+      volumes:
+        - .:/application
+        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:4.9
+        container_name: azki-microservice-pma
+        depends_on:
+          - mariadb
+        ports:
+          - "127.0.0.1:6973:80"
+        environment:
+          - PMA_HOST=azki-microservice-mariadb
+        volumes:
+          - /sessions
+          - ./phpdocker/phpmyadmin/save/:/var/www/phpmyadmin/save/
+          - ./phpdocker/phpmyadmin/upload/:/var/www/phpmyadmin/upload/
+          - ./phpdocker/phpmyadmin/config.php:/etc/phpmyadmin/config.user.inc.php
