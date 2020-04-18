@@ -59,3 +59,7 @@ navigate your browser to http://localhost:6999/api
 ```
 
 Enter the name of entity and the field details of every entity. Your new entity api is available and ready to use.
+
+## Documentions :
+
+please visit: https://api-platform.com/docs/core/
