@@ -107,7 +107,7 @@ class Surveys
     {
         if (!$this->surveyQuestions->contains($surveyQuestion)) {
             $this->surveyQuestions[] = $surveyQuestion;
-            $surveyQuestion->setQuestion2($this);
+            $surveyQuestion->setSurveyId($this);
         }
 
         return $this;
@@ -118,8 +118,8 @@ class Surveys
         if ($this->surveyQuestions->contains($surveyQuestion)) {
             $this->surveyQuestions->removeElement($surveyQuestion);
             // set the owning side to null (unless already changed)
-            if ($surveyQuestion->getQuestion2() === $this) {
-                $surveyQuestion->setQuestion2(null);
+            if ($surveyQuestion->getSurveyId() === $this) {
+                $surveyQuestion->setSurveyId(null);
             }
         }
 
