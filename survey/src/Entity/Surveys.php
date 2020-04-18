@@ -38,13 +38,13 @@ class Surveys
     private $description;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      * @Groups({"read","write"})
      */
     private $create_date;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\SurveyQuestions", mappedBy="question2", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\SurveyQuestions", mappedBy="survey", orphanRemoval=true)
      * @Groups({"read"})
      */
     private $surveyQuestions;
